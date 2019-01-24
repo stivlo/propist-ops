@@ -2,14 +2,13 @@
 # I need to start from an Ubuntu container otherwise ppa archives don't work
 
 FROM ubuntu:18.04
-MAINTAINER Stefano Locati "stivlo@gmail.com"
 EXPOSE 8080
 
 # Install basic packages
 RUN apt-get update 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
     apt-transport-https mlocate gnupg wget software-properties-common \
-    curl vim
+    curl vim git maven
 
 # Install Java
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openjdk-8-jdk
@@ -30,9 +29,6 @@ RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
 RUN python get-pip.py
 RUN pip install awscli
 
-# Install gcloud command line tool
-RUN curl https://sdk.cloud.google.com | bash
-
 # Install Jenkins
 RUN wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | apt-key add -
 RUN echo deb https://pkg.jenkins.io/debian-stable binary/ >> /etc/apt/sources.list
@@ -46,5 +42,14 @@ RUN cp /usr/share/jenkins/jenkins.war /usr/local/tomcat/webapps/ROOT.war
 # Update file list to be able to use locate command
 RUN updatedb
 
-WORKDIR /usr/local/tomcat
-CMD ["bin/catalina.sh", "run"]
+# 
+RUN chown -R jenkins.jenkins /usr/local/tomcat
+USER jenkins
+
+# Install gcloud command line tool
+RUN curl https://sdk.cloud.google.com | bash
+
+VOLUME ["/var/lib/jenkins/"]
+WORKDIR /var/libs/jenkins
+ENV CATALINA_OPTS='-DJENKINS_HOME=/var/lib/jenkins/ -Xmx512m'
+CMD ["/usr/local/tomcat/bin/catalina.sh", "run"]

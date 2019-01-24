@@ -1,0 +1,15 @@
+- ec2:
+    key_name: propist-web
+    instance_type: t2.micro
+    image: ami-035be7bafff33b6b6
+    wait: yes
+    group: web-server
+    count: 1
+    vpc_subnet_id: subnet-0d6a0b1d9dd93a34e
+    assign_public_ip: yes
+    termination_protection: yes
+    volumes:
+      - device_name: /dev/xvda
+        volume_type: gp2
+        volume_size: 14
+

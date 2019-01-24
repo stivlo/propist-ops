@@ -4,7 +4,10 @@
 
 * Create and run the container and show logs
 
-```docker container run -it -p 9000:8080 --name pr-jenkins pr-jenkins:1.0```
+```
+docker container run -it -p 9000:8080 -v ~/Applications/pr-jenkins:/var/lib/jenkins \
+    --name pr-jenkins pr-jenkins:1.0
+```
 
 * Connect with command line to the container
 

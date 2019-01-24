@@ -1,5 +1,5 @@
-- hosts: localhost
+- hosts: all
   connection: local
   roles: 
-    - create-propist-web
+    - prepare-target
   tags: ec2_create

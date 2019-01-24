@@ -1,0 +1,24 @@
+- name: Create propist-web instance
+  ec2:
+    # key pair name
+    key_name: slocati
+    instance_type: t2.micro
+    region: us-east-1
+    image: ami-035be7bafff33b6b6
+    wait: yes
+    # security group
+    group: web-server
+    instance_tags:
+      Name: propist-web
+    # how many instances that match the 'count_tag' parameter should be running 
+    exact_count: 1
+    count_tag:
+      Name: propist-web
+    vpc_subnet_id: subnet-0d6a0b1d9dd93a34e
+    assign_public_ip: yes
+    termination_protection: yes
+    volumes:
+      - device_name: /dev/xvda
+        volume_type: gp2
+        volume_size: 14
+

@@ -24,10 +24,12 @@ RUN apt-add-repository -y ppa:ansible/ansible
 RUN apt-get update 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ansible
 
-# Install AWS command line tools
+# Install AWS command line tools & python's boto & boto3 AWS SDKs
 RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
 RUN python get-pip.py
 RUN pip install awscli
+RUN pip install boto
+RUN pip install boto3
 
 # Install Jenkins
 RUN wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | apt-key add -

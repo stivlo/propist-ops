@@ -8,7 +8,7 @@ EXPOSE 8080
 RUN apt-get update 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
     apt-transport-https mlocate gnupg wget software-properties-common \
-    curl vim git maven
+    curl vim git maven jq
 
 # Install Java
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openjdk-8-jdk

@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+
+    wordpress:
+        depends_on:
+            - database
+        image: wordpress:5.0.3-php7.1-apache
+        container_name: wordpress
+        restart: always
+        volumes:
+            - ./wp-content:/var/www/html/wp-content
+        networks:
+            - wp_network
+        ports:
+            - '80:80'
+        environment:
+            WORDPRESS_DB_USER: wordpress
+            WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+            WORDPRESS_DB_HOST: database:3306
+
+    database:
+        image: mariadb:10.3.12-bionic
+        container_name: mariadb
+        restart: always
+        volumes:
+            - ./db-data:/var/lib/mysql
+        networks:
+            - wp_network
+        ports:
+            - '3306:3306'
+        environment:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress
+          MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+networks:
+    wp_network: 
+

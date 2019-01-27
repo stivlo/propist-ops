@@ -2,4 +2,4 @@
   connection: local
   roles: 
     - create-propist-web
-  tags: ec2_create
+  tags: ec2-create

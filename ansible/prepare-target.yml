@@ -1,5 +1,16 @@
 - hosts: all
-  connection: local
-  roles: 
-    - prepare-target
-  tags: ec2_create
+  tasks:
+    - name: prepare host
+      gather_facts: False
+      remote_user: ec2-user
+      become: yes
+
+      tasks:
+        - name: Install Python 2
+          raw: test -e /usr/bin/python || (apt-get update && apt-get install -y python)
+    
+        - name: Install authorized_keys
+          authorized_keys: user=ubuntu
+                          state=present
+                          exclusive=no
+                          key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
